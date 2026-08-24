@@ -36,7 +36,7 @@ function VerifyEmailPage() {
     window.setTimeout(() => {
       setLoading(false);
       toast.success("Email verified", { description: "Your 30-day trial is active." });
-      navigate({ to: "/app" });
+      navigate({ to: "/movies" });
     }, 700);
   };
 
@@ -66,7 +66,11 @@ function VerifyEmailPage() {
         {error ? <p className="text-center text-xs text-destructive">{error}</p> : null}
 
         <Button type="submit" variant="brand" className="w-full" disabled={loading}>
-          {loading ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <MailCheck className="size-4" aria-hidden />}
+          {loading ? (
+            <Loader2 className="size-4 animate-spin" aria-hidden />
+          ) : (
+            <MailCheck className="size-4" aria-hidden />
+          )}
           {loading ? "Verifying" : "Verify email"}
         </Button>
         <Button

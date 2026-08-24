@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AuthShell } from "@/components/auth/auth-shell";
+import { useAuth } from "@/features/auth/auth-context";
 
 export const Route = createFileRoute("/login")({
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search["redirect"] === "string" ? { redirect: search["redirect"] } : {},
   head: () => ({
     meta: [
       { title: "Login — AI Multi-Agent Business Simulator" },
@@ -23,12 +26,14 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next: typeof errors = {};
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) next.email = "Enter a valid email address.";
@@ -37,11 +42,16 @@ function LoginPage() {
     if (Object.keys(next).length) return;
 
     setLoading(true);
-    window.setTimeout(() => {
+    try {
+      await signIn(email, password);
+      toast.success("Signed in", { description: "Welcome back." });
+      // `redirect` carries an in-app path captured before the sign-in detour.
+      await navigate({ to: (redirect ?? "/movies") as "/movies" });
+    } catch (error) {
+      toast.error("Sign in failed", { description: (error as Error).message });
+    } finally {
       setLoading(false);
-      toast.success("Signed in", { description: "Welcome back to your workspace." });
-      navigate({ to: "/app" });
-    }, 700);
+    }
   };
 
   return (
@@ -57,7 +67,7 @@ function LoginPage() {
         </>
       }
     >
-      <form onSubmit={submit} noValidate className="space-y-4">
+      <form onSubmit={(e) => void submit(e)} noValidate className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="login-email">Work email</Label>
           <Input
@@ -80,7 +90,10 @@ function LoginPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="login-password">Password</Label>
-            <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">
+            <Link
+              to="/forgot-password"
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
               Forgot password?
             </Link>
           </div>

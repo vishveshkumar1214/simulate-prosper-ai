@@ -70,16 +70,45 @@ const steps = [
 ];
 
 const features = [
-  { icon: Users, title: "Multi-agent simulation", body: "Eight role-specific agents debate and commit to decisions each round." },
-  { icon: Activity, title: "Real-time KPIs", body: "Revenue, profit, customers, market share and risk update as rounds resolve." },
-  { icon: BarChart3, title: "Business analytics", body: "Compare rounds, scenarios and levers with charts built for decisions, not decoration." },
-  { icon: Lightbulb, title: "AI recommendations", body: "Concise, prioritised next actions grounded in what the simulation actually showed." },
-  { icon: History, title: "Simulation history", body: "Search, filter and revisit every scenario with its full result set intact." },
-  { icon: FileText, title: "Automated reports", body: "Board-ready reports assembled automatically and exportable as PDF." },
+  {
+    icon: Users,
+    title: "Multi-agent simulation",
+    body: "Eight role-specific agents debate and commit to decisions each round.",
+  },
+  {
+    icon: Activity,
+    title: "Real-time KPIs",
+    body: "Revenue, profit, customers, market share and risk update as rounds resolve.",
+  },
+  {
+    icon: BarChart3,
+    title: "Business analytics",
+    body: "Compare rounds, scenarios and levers with charts built for decisions, not decoration.",
+  },
+  {
+    icon: Lightbulb,
+    title: "AI recommendations",
+    body: "Concise, prioritised next actions grounded in what the simulation actually showed.",
+  },
+  {
+    icon: History,
+    title: "Simulation history",
+    body: "Search, filter and revisit every scenario with its full result set intact.",
+  },
+  {
+    icon: FileText,
+    title: "Automated reports",
+    body: "Board-ready reports assembled automatically and exportable as PDF.",
+  },
 ];
 
 const dashboardKpis = [
-  { label: "Revenue projection", value: "$4.2M", note: "+12.4% vs baseline", tone: "brand" as const },
+  {
+    label: "Revenue projection",
+    value: "$4.2M",
+    note: "+12.4% vs baseline",
+    tone: "brand" as const,
+  },
   { label: "Net profit", value: "$842K", note: "Optimum margin", tone: "brand" as const },
   { label: "Customers", value: "42,091", note: "CAC down 11%", tone: "brand" as const },
   { label: "Market share", value: "18.2%", note: "Tier 2 position", tone: "muted" as const },
@@ -99,8 +128,8 @@ function Landing() {
                 Simulate. Analyze. Decide. Grow.
               </h1>
               <p className="mt-6 max-w-[42ch] text-pretty text-lg text-muted-foreground">
-                Orchestrate eight AI business agents to model realistic decisions and outcomes.
-                Gain predictive clarity before committing capital.
+                Orchestrate eight AI business agents to model realistic decisions and outcomes. Gain
+                predictive clarity before committing capital.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Button asChild variant="brand" size="lg">
@@ -110,7 +139,7 @@ function Landing() {
                   </Link>
                 </Button>
                 <Button asChild variant="secondary" size="lg">
-                  <Link to="/app">Explore Demo</Link>
+                  <Link to="/movies">Book Movie Tickets</Link>
                 </Button>
               </div>
               <p className="mt-4 text-xs text-muted-foreground">
@@ -295,11 +324,7 @@ function Landing() {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  asChild
-                  variant={p.featured ? "brand" : "outline"}
-                  className="mt-8 w-full"
-                >
+                <Button asChild variant={p.featured ? "brand" : "outline"} className="mt-8 w-full">
                   <Link to="/signup">{p.cta}</Link>
                 </Button>
               </div>
