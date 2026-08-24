@@ -17,6 +17,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as BookingsIndexRouteImport } from './routes/bookings/index'
+import { Route as BookingsBookingIdRouteImport } from './routes/bookings/$bookingId'
+import { Route as CheckoutBookingIdRouteImport } from './routes/checkout/$bookingId'
+import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as MoviesSlugRouteImport } from './routes/movies/$slug'
+import { Route as ShowsShowIdRouteImport } from './routes/shows/$showId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +64,36 @@ const VerifyEmailRoute = VerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookingsIndexRoute = BookingsIndexRouteImport.update({
+  id: '/bookings/',
+  path: '/bookings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingsBookingIdRoute = BookingsBookingIdRouteImport.update({
+  id: '/bookings/$bookingId',
+  path: '/bookings/$bookingId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutBookingIdRoute = CheckoutBookingIdRouteImport.update({
+  id: '/checkout/$bookingId',
+  path: '/checkout/$bookingId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIndexRoute = MoviesIndexRouteImport.update({
+  id: '/movies/',
+  path: '/movies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesSlugRoute = MoviesSlugRouteImport.update({
+  id: '/movies/$slug',
+  path: '/movies/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowsShowIdRoute = ShowsShowIdRouteImport.update({
+  id: '/shows/$showId',
+  path: '/shows/$showId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +104,12 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/bookings/$bookingId': typeof BookingsBookingIdRoute
+  '/checkout/$bookingId': typeof CheckoutBookingIdRoute
+  '/movies/$slug': typeof MoviesSlugRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/bookings/': typeof BookingsIndexRoute
+  '/movies/': typeof MoviesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +120,12 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/bookings/$bookingId': typeof BookingsBookingIdRoute
+  '/checkout/$bookingId': typeof CheckoutBookingIdRoute
+  '/movies/$slug': typeof MoviesSlugRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/bookings': typeof BookingsIndexRoute
+  '/movies': typeof MoviesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +137,12 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/signup': typeof SignupRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/bookings/$bookingId': typeof BookingsBookingIdRoute
+  '/checkout/$bookingId': typeof CheckoutBookingIdRoute
+  '/movies/$slug': typeof MoviesSlugRoute
+  '/shows/$showId': typeof ShowsShowIdRoute
+  '/bookings/': typeof BookingsIndexRoute
+  '/movies/': typeof MoviesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +155,12 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/signup'
     | '/verify-email'
+    | '/bookings/$bookingId'
+    | '/checkout/$bookingId'
+    | '/movies/$slug'
+    | '/shows/$showId'
+    | '/bookings/'
+    | '/movies/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +171,12 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/signup'
     | '/verify-email'
+    | '/bookings/$bookingId'
+    | '/checkout/$bookingId'
+    | '/movies/$slug'
+    | '/shows/$showId'
+    | '/bookings'
+    | '/movies'
   id:
     | '__root__'
     | '/'
@@ -121,6 +187,12 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/signup'
     | '/verify-email'
+    | '/bookings/$bookingId'
+    | '/checkout/$bookingId'
+    | '/movies/$slug'
+    | '/shows/$showId'
+    | '/bookings/'
+    | '/movies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +204,12 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   SignupRoute: typeof SignupRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
+  BookingsBookingIdRoute: typeof BookingsBookingIdRoute
+  CheckoutBookingIdRoute: typeof CheckoutBookingIdRoute
+  MoviesSlugRoute: typeof MoviesSlugRoute
+  ShowsShowIdRoute: typeof ShowsShowIdRoute
+  BookingsIndexRoute: typeof BookingsIndexRoute
+  MoviesIndexRoute: typeof MoviesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +270,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bookings/': {
+      id: '/bookings/'
+      path: '/bookings'
+      fullPath: '/bookings/'
+      preLoaderRoute: typeof BookingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bookings/$bookingId': {
+      id: '/bookings/$bookingId'
+      path: '/bookings/$bookingId'
+      fullPath: '/bookings/$bookingId'
+      preLoaderRoute: typeof BookingsBookingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/$bookingId': {
+      id: '/checkout/$bookingId'
+      path: '/checkout/$bookingId'
+      fullPath: '/checkout/$bookingId'
+      preLoaderRoute: typeof CheckoutBookingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies/'
+      preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/$slug': {
+      id: '/movies/$slug'
+      path: '/movies/$slug'
+      fullPath: '/movies/$slug'
+      preLoaderRoute: typeof MoviesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shows/$showId': {
+      id: '/shows/$showId'
+      path: '/shows/$showId'
+      fullPath: '/shows/$showId'
+      preLoaderRoute: typeof ShowsShowIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +324,12 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   SignupRoute: SignupRoute,
   VerifyEmailRoute: VerifyEmailRoute,
+  BookingsBookingIdRoute: BookingsBookingIdRoute,
+  CheckoutBookingIdRoute: CheckoutBookingIdRoute,
+  MoviesSlugRoute: MoviesSlugRoute,
+  ShowsShowIdRoute: ShowsShowIdRoute,
+  BookingsIndexRoute: BookingsIndexRoute,
+  MoviesIndexRoute: MoviesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

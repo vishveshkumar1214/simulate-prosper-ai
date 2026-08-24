@@ -8,8 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { StatusPill } from "@/components/status-badge";
+import { useAuth } from "@/features/auth/auth-context";
 
 export const Route = createFileRoute("/signup")({
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search["redirect"] === "string" ? { redirect: search["redirect"] } : {},
   head: () => ({
     meta: [
       { title: "Create your account — AI Multi-Agent Business Simulator" },
@@ -34,6 +37,8 @@ interface Errors {
 
 function SignupPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
+  const { signUp } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", password: "", company: "" });
   const [terms, setTerms] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
@@ -42,7 +47,7 @@ function SignupPage() {
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next: Errors = {};
     if (form.name.trim().length < 2) next.name = "Enter your full name.";
@@ -55,11 +60,25 @@ function SignupPage() {
       return;
     }
     setLoading(true);
-    window.setTimeout(() => {
+    try {
+      const session = await signUp({
+        email: form.email,
+        password: form.password,
+        fullName: form.name.trim(),
+      });
+      if (session) {
+        toast.success("Account created", { description: "You're signed in." });
+        // `redirect` carries an in-app path captured before the sign-up detour.
+        await navigate({ to: (redirect ?? "/movies") as "/movies" });
+      } else {
+        toast.success("Account created", { description: "Verify your email to finish setup." });
+        await navigate({ to: "/verify-email" });
+      }
+    } catch (error) {
+      toast.error("Sign up failed", { description: (error as Error).message });
+    } finally {
       setLoading(false);
-      toast.success("Account created", { description: "Verify your email to finish setup." });
-      navigate({ to: "/verify-email" });
-    }, 800);
+    }
   };
 
   return (
@@ -76,10 +95,15 @@ function SignupPage() {
       }
     >
       <StatusPill label="30-day free trial" tone="brand" className="mb-6" />
-      <form onSubmit={submit} noValidate className="space-y-4">
+      <form onSubmit={(e) => void submit(e)} noValidate className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="su-name">Full name</Label>
-          <Input id="su-name" value={form.name} onChange={set("name")} aria-invalid={!!errors.name} />
+          <Input
+            id="su-name"
+            value={form.name}
+            onChange={set("name")}
+            aria-invalid={!!errors.name}
+          />
           {errors.name ? <p className="text-xs text-destructive">{errors.name}</p> : null}
         </div>
         <div className="space-y-2">
@@ -117,7 +141,10 @@ function SignupPage() {
             onCheckedChange={(v) => setTerms(v === true)}
             aria-invalid={!!errors.terms}
           />
-          <Label htmlFor="su-terms" className="text-sm font-normal leading-snug text-muted-foreground">
+          <Label
+            htmlFor="su-terms"
+            className="text-sm font-normal leading-snug text-muted-foreground"
+          >
             I agree to the terms of service and privacy policy.
           </Label>
         </div>
